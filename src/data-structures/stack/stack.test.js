@@ -13,6 +13,13 @@ test('peek()', () => {
     expect(stack.peek()).toBe('ONE');
 })
 
+test('peek() empty stack', () => {
+    const stack = new Stack();
+
+    expect(stack.size()).toBe(0);
+    expect(stack.peek()).toBe(null);
+})
+
 test('push()', () => {
     const stack = new Stack();
     stack.push('ONE'); // ONE
@@ -33,4 +40,12 @@ test('pop()', () => {
     expect(stack.size()).toBe(2);
     expect(stack.peek()).toBe('TWO');
     expect(result).toBe('THREE');
+})
+
+test('pop() empty stack', () => {
+    const stack = new Stack();
+    const result = stack.pop();
+
+    expect(stack.size()).toBe(0);
+    expect(result).toBe(null);
 })

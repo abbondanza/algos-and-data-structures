@@ -5,5 +5,3 @@ export default class DoublyLinkedListNode {
         this.value = value;
     }
 }
-
-export deault DoublyLinkedListNode;

@@ -1,4 +1,4 @@
-export default class BinarySearchTree {
+export default class BinarySearchTreeNode {
     constructor(value) {
         this.value = value;
         this.left = null;

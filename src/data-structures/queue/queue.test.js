@@ -22,3 +22,11 @@ test('dequeue()', () => {
     expect(queue.size()).toBe(2);
     expect(result).toBe('FIRST');
 })
+
+test('dequeue() empty queue', () => {
+    const queue = new Queue();
+    const result = queue.dequeue();
+
+    expect(queue.size()).toBe(0);
+    expect(result).toBe(null);
+})
