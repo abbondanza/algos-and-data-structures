@@ -1,13 +1,12 @@
 {
-  "name": "algos",
+  "name": "algos-and-data-structures",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Algorithms ans Data Structures implemented in JS",
   "scripts": {
     "test": "jest",
     "build": "babel ./src -d ./dist"
   },
-  "author": "",
+  "author": "Rafael Abbondanza <abbondanza.r@gmail.com>",
   "license": "ISC",
   "devDependencies": {
     "babel-cli": "^6.26.0",
