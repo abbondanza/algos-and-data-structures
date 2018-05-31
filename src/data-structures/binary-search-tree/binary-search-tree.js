@@ -18,25 +18,7 @@ export default class BinarySearchTree {
     }
     // key
     remove(value) {
-        const targetNode = new BinarySearchTreeNode(value);
-        const parent = _findParent(targetNode, this.root, this.compare);
-        // There either is no parent (root) or node is not found
-        if(!parent) {
-            return;
-        }
-
-        let direction = 'right';
-        if(this.compare(targetNode, parent.left) < 0) {
-            direction = 'left';
-        }
-        let nodeToDelete = parent[direction];
-        let subValue = _findLeftMostNode(nodeToDelete.right).value;
-        console.log('removing', value);
-        console.log('substitute', subValue);
-        //this.remove(subValue); // is a leaf node
-        parent[direction] = new BinarySearchTreeNode(subValue);
-        parent[direction].left = nodeToDelete.left;
-        parent[direction].right = nodeToDelete.right;
+        return _remove(new BinarySearchTreeNode(value), this.root, this.compare);
     }
     min() {
         if(this.isEmpty()) return null;
@@ -71,6 +53,21 @@ export default class BinarySearchTree {
         this.inOrder(node.left);
         console.log(node.value);
         this.inOrder(node.right);
+    }
+    bsf(node) {
+        if(!arguments.length) {
+            return this.bsf(this.root);
+        }
+        let ret = [];
+        let q = [node];
+        while(q.length) {
+            let curr = q.shift();
+            ret.push(curr.value);
+            if(curr.left) q.push(curr.left);
+            if(curr.right) q.push(curr.right);
+        }
+
+        return ret.join(' ');
     }
     isEmpty() {
         return !this.root;
@@ -131,6 +128,48 @@ function _find(targetNode, node, compareFn) {
     } else {
         return _find(targetNode, node.right, compareFn);
     }
+}
+
+function _remove(targetNode, root, compareFn) {
+    if(root === null) {
+        return null;
+    }
+
+    const compare = compareFn(targetNode, root);
+    // recurse until we return any node
+    // the node that is ultimately returned replaces
+    // old node.
+
+    // target < root, so targetNode is in left subtree
+    if(compare < 0) {
+        root.left = _remove(targetNode, root.left, compareFn);
+    // target > root, so targetNode is in right subtree
+    } else if (compare > 0) {
+        root.right = _remove(targetNode, root.right, compareFn);
+    // current root IS node to delete
+    } else {
+        console.log(' delete me ! ', root.value);
+        // case 1: no children
+        // return null root, so parent sets one of its children to null
+        if(!root.left && !root.right) {
+            return null;
+        }
+        // case 2: one child
+        if(!root.right) {
+            return root.left;
+        }
+
+        if(!root.left) {
+            return root.right;
+        }
+        // case 3: two children
+        // dupe node?
+        console.log('root', root);
+        root.value = _findLeftMostNode(root.right).value;
+        console.log('root', root);
+        root.right = _remove(root, root.right, compareFn);
+    }
+    return root;
 }
 
 function _findParent(targetNode, node, compareFn) {

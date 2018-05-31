@@ -79,7 +79,7 @@ test('max() on empty tree', () => {
     expect(tree.max()).toBeNull();
 })
 
-test('remove()', () => {
+test('remove() element with 2 children', () => {
     const tree = new BinarySearchTree();
     tree.insert('M');
     /*
@@ -131,9 +131,130 @@ test('remove()', () => {
             /  \
            O    Z
     */
+    tree.inOrder();
+    console.log(tree.bsf());
 
     expect(tree.countNodes()).toBe(5);
     expect(tree.contains('X')).toBe(false);
+})
+
+
+test('remove() element with 1 child', () => {
+    const tree = new BinarySearchTree();
+    tree.insert('M');
+    /*
+            M
+    */
+    tree.insert('A');
+    /*
+            M
+          /
+        A
+    */
+    tree.insert('X');
+    /*
+            M
+          /  \
+        A     X
+    */
+    tree.insert('Z');
+    /*
+            M
+          /  \
+        A     X
+               \
+                Z
+    */
+    tree.insert('O');
+    /*
+            M
+          /  \
+        A     X
+            /  \
+           O    Z
+    */
+    tree.insert('Y');
+    /*
+            M
+          /  \
+        A     X
+            /  \
+           O    Z
+               /
+              Y
+    */
+    tree.remove('Z');
+    /*
+            M
+          /  \
+        A     X
+            /  \
+           O    Y
+    */
+    console.log(tree.bsf());
+
+    expect(tree.countNodes()).toBe(5);
+    expect(tree.contains('Z')).toBe(false);
+})
+
+test('remove() leaf node', () => {
+    const tree = new BinarySearchTree();
+    tree.insert('M');
+    /*
+            M
+    */
+    tree.insert('A');
+    /*
+            M
+          /
+        A
+    */
+    tree.insert('X');
+    /*
+            M
+          /  \
+        A     X
+    */
+    tree.insert('Z');
+    /*
+            M
+          /  \
+        A     X
+               \
+                Z
+    */
+    tree.insert('O');
+    /*
+            M
+          /  \
+        A     X
+            /  \
+           O    Z
+    */
+    tree.insert('Y');
+    /*
+            M
+          /  \
+        A     X
+            /  \
+           O    Z
+               /
+              Y
+    */
+    tree.remove('O');
+    /*
+            M
+          /  \
+        A     X
+               \
+                Z
+               /
+              Y
+    */
+    console.log(tree.bsf());
+
+    expect(tree.countNodes()).toBe(5);
+    expect(tree.contains('O')).toBe(false);
 })
 
 test.skip('remove() with duplicates', () => {
