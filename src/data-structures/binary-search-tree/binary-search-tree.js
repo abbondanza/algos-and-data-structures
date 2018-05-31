@@ -14,10 +14,30 @@ export default class BinarySearchTree {
     }
 
     contains(value) {
-        return _contains(value, this.root, this.compare);
+        return !!_find(new BinarySearchTreeNode(value), this.root, this.compare);
     }
+    // key
+    remove(value) {
+        const targetNode = new BinarySearchTreeNode(value);
+        const parent = _findParent(targetNode, this.root, this.compare);
+        // There either is no parent (root) or node is not found
+        if(!parent) {
+            return;
+        }
 
-    remove() {}
+        let direction = 'right';
+        if(this.compare(targetNode, parent.left) < 0) {
+            direction = 'left';
+        }
+        let nodeToDelete = parent[direction];
+        let subValue = _findLeftMostNode(nodeToDelete.right).value;
+        console.log('removing', value);
+        console.log('substitute', subValue);
+        //this.remove(subValue); // is a leaf node
+        parent[direction] = new BinarySearchTreeNode(subValue);
+        parent[direction].left = nodeToDelete.left;
+        parent[direction].right = nodeToDelete.right;
+    }
     min() {
         if(this.isEmpty()) return null;
         return _findLeftMostNode(this.root).value;
@@ -59,7 +79,7 @@ export default class BinarySearchTree {
 
 function _findRightMostNode(root) {
     let maxNode = root;
-    while(maxNode.right) {
+    while(maxNode && maxNode.right) {
         maxNode = maxNode.right;
     }
     return maxNode;
@@ -67,7 +87,7 @@ function _findRightMostNode(root) {
 
 function _findLeftMostNode(root) {
     let minNode = root;
-    while(minNode.left) {
+    while(minNode && minNode.left) {
         minNode = minNode.left;
     }
     return minNode;
@@ -99,16 +119,49 @@ function _insertNode(node, root, compareFn) {
     }
 }
 
-function _contains(value, node, compareFn) {
+function _find(targetNode, node, compareFn) {
     if(node === null) {
-        return false;
+        return null;
     }
-    const compare = compareFn(new BinarySearchTreeNode(value), node);
+    const compare = compareFn(targetNode, node);
     if(compare === 0) {
-        return true;
+        return node;
     } else if(compare < 0) {
-        return _contains(value, node.left, compareFn);
+        return _find(targetNode, node.left, compareFn);
     } else {
-        return _contains(value, node.right, compareFn);
+        return _find(targetNode, node.right, compareFn);
     }
+}
+
+function _findParent(targetNode, node, compareFn) {
+    // This can only happen when tree is empty
+    if(node === null) {
+        return null;
+    }
+
+    const compare = compareFn(targetNode, node);
+    // this means that targetNode is root..
+    if(!compare) {
+        return null;
+    }
+    // targetNode is non-existent
+    if(compare < 0 && !node.left) {
+        return null;
+    }
+    // targetNode is non-existent
+    if(compare > 0 && !node.right) {
+        return null;
+    }
+
+    // This is the base case for the recursion. We found it!
+    if(!compareFn(targetNode, node.left) || !compareFn(targetNode, node.right)) {
+        return node;
+    }
+
+    // If parent is to the left
+    if(compare < 0) {
+        return _findParent(targetNode, node.left, compareFn);
+    }
+    // If parent is to the right
+    return _findParent(targetNode, node.right, compareFn);
 }

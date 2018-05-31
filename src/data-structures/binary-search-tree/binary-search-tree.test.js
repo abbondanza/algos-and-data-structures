@@ -52,7 +52,7 @@ test('contains()', () => {
 test('min()', () => {
     const tree = new BinarySearchTree();
     tree.insert('M');
-    tree.insert('B');
+    tree.insert('N');
     tree.insert('Z');
     tree.insert('X');
     tree.insert('A');
@@ -79,17 +79,60 @@ test('max() on empty tree', () => {
     expect(tree.max()).toBeNull();
 })
 
-test.skip('remove()', () => {
+test('remove()', () => {
     const tree = new BinarySearchTree();
     tree.insert('M');
+    /*
+            M
+    */
     tree.insert('A');
-    tree.insert('Z');
+    /*
+            M
+          /
+        A
+    */
     tree.insert('X');
-    tree.remove('M');
+    /*
+            M
+          /  \
+        A     X
+    */
+    tree.insert('Z');
+    /*
+            M
+          /  \
+        A     X
+               \
+                Z
+    */
+    tree.insert('O');
+    /*
+            M
+          /  \
+        A     X
+            /  \
+           O    Z
+    */
+    tree.insert('Y');
+    /*
+            M
+          /  \
+        A     X
+            /  \
+           O    Z
+               /
+              Y
+    */
     tree.remove('X');
+    /*
+            M
+          /  \
+        A     Y
+            /  \
+           O    Z
+    */
 
-    expect(tree.countNodes()).toBe(2);
-    expect(tree.contains('M')).toBe(false);
+    expect(tree.countNodes()).toBe(5);
     expect(tree.contains('X')).toBe(false);
 })
 
