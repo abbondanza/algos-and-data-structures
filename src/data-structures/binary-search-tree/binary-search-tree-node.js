@@ -3,6 +3,5 @@ export default class BinarySearchTreeNode {
         this.value = value;
         this.left = null;
         this.right = null;
-        this.count = 1;
     }
 }
