@@ -14,10 +14,11 @@ export default class BinarySearchTree {
     }
 
     contains(value) {
-        return _contains(value, this.root, this.compare);
+        return !!_find(new BinarySearchTreeNode(value), this.root, this.compare);
     }
-
-    remove() {}
+    remove(value) {
+        this.root = _remove(new BinarySearchTreeNode(value), this.root, this.compare);
+    }
     min() {
         if(this.isEmpty()) return null;
         return _findLeftMostNode(this.root).value;
@@ -41,25 +42,17 @@ export default class BinarySearchTree {
         }
         return 0;
     }
-    inOrder(node) {
-        if(!arguments.length) {
-            return this.inOrder(this.root);
-        }
-        if(!node) {
-            return;
-        }
-        this.inOrder(node.left);
-        console.log(node.value);
-        this.inOrder(node.right);
+    inOrderTraversal(callback) {
+        return _inOrder(this.root, callback);
     }
     isEmpty() {
-        return !this.root;
+        return this.countNodes() === 0;
     }
 }
 
 function _findRightMostNode(root) {
     let maxNode = root;
-    while(maxNode.right) {
+    while(maxNode && maxNode.right) {
         maxNode = maxNode.right;
     }
     return maxNode;
@@ -67,7 +60,7 @@ function _findRightMostNode(root) {
 
 function _findLeftMostNode(root) {
     let minNode = root;
-    while(minNode.left) {
+    while(minNode && minNode.left) {
         minNode = minNode.left;
     }
     return minNode;
@@ -99,16 +92,96 @@ function _insertNode(node, root, compareFn) {
     }
 }
 
-function _contains(value, node, compareFn) {
+function _find(targetNode, node, compareFn) {
     if(node === null) {
-        return false;
+        return null;
     }
-    const compare = compareFn(new BinarySearchTreeNode(value), node);
+    const compare = compareFn(targetNode, node);
     if(compare === 0) {
-        return true;
+        return node;
     } else if(compare < 0) {
-        return _contains(value, node.left, compareFn);
+        return _find(targetNode, node.left, compareFn);
     } else {
-        return _contains(value, node.right, compareFn);
+        return _find(targetNode, node.right, compareFn);
     }
+}
+
+function _remove(targetNode, root, compareFn) {
+    if(root === null) {
+        return null;
+    }
+
+    const compare = compareFn(targetNode, root);
+    // recurse until we return any node
+    // the node that is ultimately returned replaces
+    // old node.
+
+    // target < root, so targetNode is in left subtree
+    if(compare < 0) {
+        root.left = _remove(targetNode, root.left, compareFn);
+    // target > root, so targetNode is in right subtree
+    } else if (compare > 0) {
+        root.right = _remove(targetNode, root.right, compareFn);
+    // current root IS node to delete
+    } else {
+        // case 1: no children
+        // return null root, so parent sets one of its children to null
+        if(!root.left && !root.right) {
+            return null;
+        }
+        // case 2: one child
+        if(!root.right) {
+            return root.left;
+        }
+
+        if(!root.left) {
+            return root.right;
+        }
+        // case 3: two children
+        root.value = _findLeftMostNode(root.right).value;
+        root.right = _remove(root, root.right, compareFn);
+    }
+    return root;
+}
+
+function _inOrder(root, callback) {
+    if(!root) {
+        return;
+    }
+    _inOrder(root.left, callback);
+    callback(root.value);
+    _inOrder(root.right, callback);
+}
+
+function _findParent(targetNode, node, compareFn) {
+    // This can only happen when tree is empty
+    if(node === null) {
+        return null;
+    }
+
+    const compare = compareFn(targetNode, node);
+    // this means that targetNode is root..
+    if(!compare) {
+        return null;
+    }
+    // targetNode is non-existent
+    if(compare < 0 && !node.left) {
+        return null;
+    }
+    // targetNode is non-existent
+    if(compare > 0 && !node.right) {
+        return null;
+    }
+
+    // This is the base case for the recursion. We found it!
+    if(!compareFn(targetNode, node.left) || !compareFn(targetNode, node.right)) {
+        return node;
+    }
+
+    // If parent is to the left
+    if(compare < 0) {
+        return _findParent(targetNode, node.left, compareFn);
+    }
+    // If parent is to the right
+    return _findParent(targetNode, node.right, compareFn);
 }
