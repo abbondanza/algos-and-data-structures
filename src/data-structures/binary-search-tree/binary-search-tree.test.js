@@ -79,6 +79,52 @@ test('max() on empty tree', () => {
     expect(tree.max()).toBeNull();
 })
 
+test('inOrderTraversal()', () => {
+    const tree = new BinarySearchTree();
+    expect(_inOrderTraversalOf(tree)).toEqual([]);
+});
+
+test('inOrderTraversal()', () => {
+    const tree = new BinarySearchTree();
+    tree.insert('M');
+    /*
+            M
+    */
+    expect(_inOrderTraversalOf(tree)).toEqual(['M']);
+    tree.insert('K');
+    /*
+            M
+          /
+        K
+    */
+    expect(_inOrderTraversalOf(tree)).toEqual(['K', 'M']);
+    tree.insert('P');
+    /*
+            M
+          /  \
+        K     P
+    */
+    expect(_inOrderTraversalOf(tree)).toEqual(['K', 'M', 'P']);
+    tree.insert('C');
+    /*
+            M
+          /  \
+        K     P
+      /
+     C
+    */
+    expect(_inOrderTraversalOf(tree)).toEqual(['C', 'K', 'M', 'P']);
+    tree.insert('L');
+    /*
+            M
+          /  \
+        K     P
+      /  \
+     C    L
+    */
+    expect(_inOrderTraversalOf(tree)).toEqual(['C', 'K', 'L', 'M', 'P']);
+});
+
 test('remove() element with 2 children', () => {
     const tree = new BinarySearchTree();
     tree.insert('M');
@@ -131,11 +177,7 @@ test('remove() element with 2 children', () => {
             /  \
            O    Z
     */
-    tree.inOrder();
-    console.log(tree.bsf());
-
-    expect(tree.countNodes()).toBe(5);
-    expect(tree.contains('X')).toBe(false);
+    expect(_inOrderTraversalOf(tree)).toEqual(['A', 'M', 'O', 'Y', 'Z']);
 })
 
 
@@ -191,10 +233,7 @@ test('remove() element with 1 child', () => {
             /  \
            O    Y
     */
-    console.log(tree.bsf());
-
-    expect(tree.countNodes()).toBe(5);
-    expect(tree.contains('Z')).toBe(false);
+    expect(_inOrderTraversalOf(tree)).toEqual(['A', 'M', 'O', 'X', 'Y']);
 })
 
 test('remove() leaf node', () => {
@@ -251,27 +290,105 @@ test('remove() leaf node', () => {
                /
               Y
     */
-    console.log(tree.bsf());
-
-    expect(tree.countNodes()).toBe(5);
-    expect(tree.contains('O')).toBe(false);
+    expect(_inOrderTraversalOf(tree)).toEqual(['A', 'M', 'X', 'Y', 'Z']);
 })
 
-test.skip('remove() with duplicates', () => {
+test('remove() root', () => {
     const tree = new BinarySearchTree();
     tree.insert('A');
-    tree.insert('A');
-    tree.insert('A');
-
-    expect(tree.remove('A')).not.toThrow();
-    expect(tree.countNodes()).toBe(2);
-    expect(tree.contains('A')).toBe(true);
-})
-
-test.skip('remove() non-existent item', () => {
-    const tree = new BinarySearchTree();
-    tree.insert('A');
+    /*
+            A
+    */
     tree.insert('B');
+    /*
+            A
+             \
+              B
+    */
     tree.insert('C');
-    expect(tree.remove('Z')).not.toThrow();
+    /*
+            A
+             \
+              B
+               \
+                C
+    */
+    tree.remove('A');
+    /*
+              B
+               \
+                C
+    */
+    expect(_inOrderTraversalOf(tree)).toEqual(['B', 'C']);
 })
+
+test('remove() with duplicates', () => {
+    const tree = new BinarySearchTree();
+    tree.insert('A');
+    /*
+            A
+    */
+    tree.insert('B');
+    /*
+            A
+             \
+              B
+    */
+    tree.insert('C');
+    /*
+            A
+             \
+              B
+               \
+                C
+    */
+    tree.insert('A');
+    /*
+            A
+             \
+              B
+            /  \
+           A    C
+    */
+    tree.remove('A');
+    /*
+            A
+             \
+              B
+               \
+                C
+    */
+    expect(_inOrderTraversalOf(tree)).toEqual(['A', 'B', 'C']);
+})
+
+test('remove() non-existent item', () => {
+    const tree = new BinarySearchTree();
+    tree.insert('A');
+    /*
+            A
+    */
+    tree.insert('B');
+    /*
+            A
+             \
+              B
+    */
+    tree.insert('C');
+    /*
+            A
+             \
+              B
+               \
+                C
+    */
+    tree.remove('Z');
+    expect(_inOrderTraversalOf(tree)).toEqual(['A', 'B', 'C']);
+})
+
+function _inOrderTraversalOf(tree) {
+    const inOrder = [];
+    tree.inOrderTraversal((element) => {
+        inOrder.push(element);
+    });
+    return inOrder;
+}

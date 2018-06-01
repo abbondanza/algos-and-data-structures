@@ -16,9 +16,8 @@ export default class BinarySearchTree {
     contains(value) {
         return !!_find(new BinarySearchTreeNode(value), this.root, this.compare);
     }
-    // key
     remove(value) {
-        return _remove(new BinarySearchTreeNode(value), this.root, this.compare);
+        this.root = _remove(new BinarySearchTreeNode(value), this.root, this.compare);
     }
     min() {
         if(this.isEmpty()) return null;
@@ -43,34 +42,11 @@ export default class BinarySearchTree {
         }
         return 0;
     }
-    inOrder(node) {
-        if(!arguments.length) {
-            return this.inOrder(this.root);
-        }
-        if(!node) {
-            return;
-        }
-        this.inOrder(node.left);
-        console.log(node.value);
-        this.inOrder(node.right);
-    }
-    bsf(node) {
-        if(!arguments.length) {
-            return this.bsf(this.root);
-        }
-        let ret = [];
-        let q = [node];
-        while(q.length) {
-            let curr = q.shift();
-            ret.push(curr.value);
-            if(curr.left) q.push(curr.left);
-            if(curr.right) q.push(curr.right);
-        }
-
-        return ret.join(' ');
+    inOrderTraversal(callback) {
+        return _inOrder(this.root, callback);
     }
     isEmpty() {
-        return !this.root;
+        return this.countNodes() === 0;
     }
 }
 
@@ -148,7 +124,6 @@ function _remove(targetNode, root, compareFn) {
         root.right = _remove(targetNode, root.right, compareFn);
     // current root IS node to delete
     } else {
-        console.log(' delete me ! ', root.value);
         // case 1: no children
         // return null root, so parent sets one of its children to null
         if(!root.left && !root.right) {
@@ -163,13 +138,19 @@ function _remove(targetNode, root, compareFn) {
             return root.right;
         }
         // case 3: two children
-        // dupe node?
-        console.log('root', root);
         root.value = _findLeftMostNode(root.right).value;
-        console.log('root', root);
         root.right = _remove(root, root.right, compareFn);
     }
     return root;
+}
+
+function _inOrder(root, callback) {
+    if(!root) {
+        return;
+    }
+    _inOrder(root.left, callback);
+    callback(root.value);
+    _inOrder(root.right, callback);
 }
 
 function _findParent(targetNode, node, compareFn) {
