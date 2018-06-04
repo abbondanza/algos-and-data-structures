@@ -1,5 +1,4 @@
 const binaryTreeBSF = (root, callback) => {
-    let ret = [];
     let q = [root];
     while(q.length) {
         let curr = q.shift();
@@ -10,3 +9,4 @@ const binaryTreeBSF = (root, callback) => {
 }
 
 export default binaryTreeBSF;
+
