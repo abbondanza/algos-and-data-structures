@@ -1,7 +1,7 @@
 import BinarySearchTree from '../../../data-structures/binary-search-tree/binary-search-tree';
-import binaryTreeBSF from './binary-tree-bsf';
+import binaryTreeBFS from './binary-tree-bfs';
 
-test('binaryTreeBSF()', () => {
+test('binaryTreeBFS()', () => {
     const tree = new BinarySearchTree();
     tree.insert('M');
     /*
@@ -47,7 +47,7 @@ test('binaryTreeBSF()', () => {
     */
 
     const traversal = [];
-    binaryTreeBSF(tree.getRoot(), (node) => {
+    binaryTreeBFS(tree.getRoot(), (node) => {
         traversal.push(node.value);
     });
     expect(traversal).toEqual(['M', 'A', 'X', 'O', 'Z', 'Y']);
