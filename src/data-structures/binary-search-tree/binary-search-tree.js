@@ -30,6 +30,9 @@ export default class BinarySearchTree {
     getRoot() {
         return this.root;
     }
+    // This is an O(n) algorithm, which is for demonstration purposes only.
+    // We can make this O(1) by incrementing/decrementing count on
+    // insertion and removal, respectively.
     countNodes() {
         return _countNodes(this.root, 0);
     }
