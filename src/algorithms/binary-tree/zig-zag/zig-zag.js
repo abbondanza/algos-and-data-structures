@@ -1,37 +1,34 @@
+/*
+    Zig-zag is a variation of a breadth-first binary tree algorithm.
+
+    Given the following tree:
+        M
+      /  \
+    A     X
+     \   /  \
+     B  O    Z
+       /    /
+      N    Y
+
+    Algorithm should visit tree in this order:
+    M A X Z O B N Y
+*/
 const zigZag = (root, callback) => {
-    /*
-            M
-          /  \
-        A     X
-         \   / \
-         B  O   Z
-           /   /
-          N   Y
-    */
-    /*
-    M
-    left, right  A X
-    right, left, right, left  Z O B
-    leftm right left right N Y
+    let stk1 = [root];
+    let stk2 = [];
+    while(stk1.length || stk2.length) {
+        while(stk1.length) {
+            let top = stk1.pop();
+            callback(top);
+            if(top.right) stk2.push(top.right);
+            if(top.left) stk2.push(top.left);
+        }
 
-    M.left  M.right
-
-    */
-
-
-    let q = [root]; // [M]
-    let q2 = [];
-    let level = 1;
-    while(q.length) {
-        let curr = q.shift(); // []
-        callback(curr); // "Visit"
-        if(curr.left) q2.push(curr.left); // [A]
-        if(curr.right) q2.push(curr.right); // [A, X]
-        while(q2.length) {
-            let inner = q2.shift();
-            callback(inner); // "Visit"
-            if(inner.right) q.push(inner.right); // [A]
-            if(inner.left) q.push(inner.left); // [A, X]
+        while(stk2.length) {
+            let top = stk2.pop();
+            callback(top);
+            if(top.left) stk1.push(top.left);
+            if(top.right) stk1.push(top.right);
         }
     }
 }
