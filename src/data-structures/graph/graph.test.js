@@ -16,18 +16,14 @@ test('addVertex()', () => {
 
 test('addEdge()', () => {
     const graph = new Graph();
-    graph.addVertex('A');
-    graph.addVertex('B');
     graph.addEdge('A', 'B');
     expect(graph.vertexCount()).toBe(2);
     expect(graph.hasEdge('A', 'B')).toBe(true);
-    expect(graph.hasEdge('B', 'A')).toBe(false);
+    expect(graph.hasEdge('B', 'A')).toBe(true);
 })
 
-test('addEdge()', () => {
-    const graph = new Graph();
-    graph.addVertex('A');
-    graph.addVertex('B');
+test('addEdge() - directed', () => {
+    const graph = new Graph(true);
     graph.addEdge('A', 'B');
     expect(graph.vertexCount()).toBe(2);
     expect(graph.hasEdge('A', 'B')).toBe(true);

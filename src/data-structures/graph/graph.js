@@ -7,13 +7,14 @@ const _defaultGetKey = (value) => {
 
 // Directed graph
 export default class Graph {
-    constructor(getKeyFn) {
+    constructor(directed, getKeyFn) {
         this.getKeyFn = getKeyFn || _defaultGetKey;
         this.vertices = {};
+        this.directed = directed || false;
     }
     addEdge(v, w, weight) {
         if(!this.getVertex(v)) {
-            this.addVertex(w);
+            this.addVertex(v);
         }
         if(!this.getVertex(w)) {
             this.addVertex(w);
@@ -21,8 +22,10 @@ export default class Graph {
 
         const V = this.getVertex(v);
         const W = this.getVertex(w);
-        const E = new GraphEdge(V, W, weight);
-        V.addEdge(E);
+        V.addEdge(new GraphEdge(V, W, weight));
+        if(!this.directed) {
+            W.addEdge(new GraphEdge(W, V, weight));
+        }
     }
     addVertex(v) {
         const V = new GraphVertex(v, this.getKeyFn);

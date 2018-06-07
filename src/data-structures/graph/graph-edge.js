@@ -4,4 +4,8 @@ export default class GraphEdge {
         this.end = end;
         this.weight = weight || 1;
     }
+
+    key() {
+        return `${this.start.key()}__${this.end.key()}`;
+    }
 }

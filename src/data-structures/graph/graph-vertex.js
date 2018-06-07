@@ -9,8 +9,8 @@ export default class GraphVertex {
         return this.getKeyFn(this.value);
     }
 
-    addEdge(V) {
-        this.edges.push(V);
+    addEdge(E) {
+        this.edges.push(E);
     }
 
     hasEdgeTo(V) {

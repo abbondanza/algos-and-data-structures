@@ -1,54 +1,18 @@
 import Graph from '../../../data-structures/graph/graph';
 import bfs from './bfs';
 
-test('bfs()', () => {
-    const graph = new Graph();
-    graph.addVertex('A');
-    /*
-        A -> []
-    */
-    graph.addVertex('B');
-    /*
-        A -> []
-        B -> []
-    */
-    graph.addVertex('C');
-    /*
-        A -> []
-        B -> []
-        C -> []
-    */
-    graph.addVertex('D');
-    /*
-        A -> []
-        B -> []
-        C -> []
-        D -> []
-    */
-    graph.addVertex('E');
-    /*
-        A -> []
-        B -> []
-        C -> []
-        D -> []
-        E -> []
-    */
-
+test('bfs() - directed', () => {
+    const graph = new Graph(true);
     graph.addEdge('A', 'C');
     /*
         A -> [C]
-        B -> []
         C -> []
-        D -> []
-        E -> []
     */
     graph.addEdge('A', 'D');
     /*
         A -> [C, D]
-        B -> []
         C -> []
         D -> []
-        E -> []
     */
 
     graph.addEdge('B', 'E');
@@ -67,29 +31,51 @@ test('bfs()', () => {
         D -> [B]
         E -> []
     */
+    graph.addEdge('B', 'C');
+    /*
+        A -> [C, D]
+        B -> [E, C]
+        C -> []
+        D -> [B]
+        E -> []
+    */
+    const traversal = [];
+    bfs(graph.getVertex('A'), (vertex)=> {
+        traversal.push(vertex);
+    });
+    const values = traversal.map((v)=>v.value);
 
-    graph.addEdge('C', 'A');
+    expect(values).toEqual(['A', 'C', 'D', 'B', 'E']);
+})
+
+test('bfs()', () => {
+    const graph = new Graph();
+    graph.addEdge('A', 'C');
+    /*
+        A -> [C]
+        C -> [A]
+    */
+    graph.addEdge('A', 'D');
+    /*
+        A -> [C, D]
+        C -> [A]
+        D -> [A]
+    */
+
+    graph.addEdge('B', 'E');
     /*
         A -> [C, D]
         B -> [E]
         C -> [A]
-        D -> [B]
-        E -> []
+        D -> [A]
+        E -> [B]
     */
-    graph.addEdge('C', 'E');
+    graph.addEdge('D', 'B');
     /*
         A -> [C, D]
-        B -> [E]
-        C -> [A, E]
-        D -> [B]
-        E -> []
-    */
-    graph.addEdge('E', 'A');
-    /*
-        A -> [C, D]
-        B -> [E]
-        C -> [A, E]
-        D -> [B]
+        B -> [E, D]
+        C -> [A]
+        D -> [A, B]
         E -> [B]
     */
 
@@ -99,8 +85,5 @@ test('bfs()', () => {
     });
     const values = traversal.map((v)=>v.value);
 
-    expect(values).toEqual(['A', 'C', 'D', 'E', 'B']);
+    expect(values).toEqual(['A', 'C', 'D', 'B', 'E']);
 })
-
-
-
