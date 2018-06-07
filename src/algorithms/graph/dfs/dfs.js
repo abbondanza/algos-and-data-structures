@@ -1,11 +1,11 @@
 const dfsHelper = (vertex, callback, visited) => {
     visited[vertex.key()] = true;
     callback(vertex);
-    vertex.adjacent.forEach((v) => {
-        if(visited[v.key()]) {
+    vertex.edges.forEach((e) => {
+        if(visited[e.end.key()]) {
             return;
         }
-        dfsHelper(v, callback, visited);
+        dfsHelper(e.end, callback, visited);
     });
 }
 

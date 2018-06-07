@@ -1,4 +1,5 @@
 import GraphVertex from './graph-vertex';
+import GraphEdge from './graph-edge';
 
 const _defaultGetKey = (value) => {
     return value;
@@ -10,13 +11,18 @@ export default class Graph {
         this.getKeyFn = getKeyFn || _defaultGetKey;
         this.vertices = {};
     }
-    addEdge(v, w) {
+    addEdge(v, w, weight) {
+        if(!this.getVertex(v)) {
+            this.addVertex(w);
+        }
+        if(!this.getVertex(w)) {
+            this.addVertex(w);
+        }
+
         const V = this.getVertex(v);
         const W = this.getVertex(w);
-        if(!V || !W) {
-            return;
-        }
-        V.addEdge(W);
+        const E = new GraphEdge(V, W, weight);
+        V.addEdge(E);
     }
     addVertex(v) {
         const V = new GraphVertex(v, this.getKeyFn);
@@ -25,6 +31,7 @@ export default class Graph {
         }
 
         this.vertices[V.key()] = V;
+        return V;
     }
     getVertex(v) {
         return this.vertices[this.getKeyFn(v)] || null;
@@ -38,7 +45,7 @@ export default class Graph {
         if(!V || !W) {
             return false;
         }
-        return V.hasEdge(W);
+        return V.hasEdgeTo(W);
     }
     getVertices() {
         return Object.keys(this.vertices).map(this.getVertex.bind(this));

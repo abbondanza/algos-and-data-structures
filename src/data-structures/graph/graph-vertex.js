@@ -1,6 +1,6 @@
 export default class GraphVertex {
     constructor(value, getKeyFn) {
-        this.adjacent = []; // or {}?
+        this.edges = [];
         this.value = value;
         this.getKeyFn = getKeyFn || _defaultGetKey;
     }
@@ -10,12 +10,12 @@ export default class GraphVertex {
     }
 
     addEdge(V) {
-        this.adjacent.push(V);
+        this.edges.push(V);
     }
 
-    hasEdge(V) {
-        return !!this.adjacent.filter((I)=>{
-            return V.key() === I.key();
+    hasEdgeTo(V) {
+        return !!this.edges.filter((edge)=>{
+            return V.key() === edge.end.key();
         }).length;
     }
 

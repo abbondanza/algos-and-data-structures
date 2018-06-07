@@ -5,9 +5,9 @@ const bfs = (vertex, callback) => {
         let curr = q.shift();
         visited[curr.key()] = true;
         callback(curr);
-        curr.adjacent.forEach((v)=>{
-            if(!visited[v.key()]) {
-                q.push(v);
+        curr.edges.forEach((edge)=>{
+            if(!visited[edge.end.key()]) {
+                q.push(edge.end);
             }
         });
     }
