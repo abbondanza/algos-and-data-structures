@@ -83,7 +83,7 @@ export default class Heap {
         if(this.isEmpty()) {
             return null;
         }
-        const oldTop = top();
+        const oldTop = this.top();
         this.heapArray[0] = this.heapArray.pop();
         _sinkDown(0, this.heapArray, this.comparator);
         return oldTop;

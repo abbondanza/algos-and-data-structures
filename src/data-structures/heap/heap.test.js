@@ -58,7 +58,7 @@ test('insert() - min heap', () => {
     expect(heap.top()).toBe(-1);
 })
 
-test.skip('extractTop() - max heap', () => {
+test('extractTop() - max heap', () => {
     const heap = new Heap(maxComparator);
     heap.insert(5);
     heap.insert(9);
@@ -73,7 +73,7 @@ test.skip('extractTop() - max heap', () => {
     expect(heap.extractTop()).toBe(-42);
 })
 
-test.skip('extractTop() - min heap', () => {
+test('extractTop() - min heap', () => {
     const heap = new Heap(minComparator);
     heap.insert(5);
     /*
