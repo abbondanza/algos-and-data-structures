@@ -1,6 +1,6 @@
 const _swimUp = (index, arr, comparator) => {
     // There is no more swimming up
-    if(index === 0) {
+    if(index === 1) {
         return;
     }
     let pIndex = _parentIndex(index, arr);
@@ -28,18 +28,18 @@ const _sinkDown = (index, arr, comparator) => {
         return;
     // node has only left child
     } else if (right >= arr.length) {
-        if(comparator(node, arr[left]) < 0) {
+        if(comparator(node, arr[left]) <= 0) {
             _swap(left, index, arr);
             _sinkDown(left, arr, comparator);
         }
     // node has both children
     } else {
         let largest = left;
-        if(comparator(arr[left], arr[right]) < 0) {
+        if(comparator(arr[left], arr[right]) <= 0) {
             largest = right;
         }
 
-        if(comparator(node, arr[largest]) < 0) {
+        if(comparator(node, arr[largest]) <= 0) {
             _swap(largest, index, arr);
             _sinkDown(largest, arr, comparator);
         }
@@ -64,14 +64,14 @@ const _rightIndex = (idx, arr) => {
     return (2*idx) + 1;
 }
 
-export default class Heap {
+export default class MaxHeap {
     constructor(comparator) {
-        this.heapArray = [];
+        this.heapArray = [null];
         this.comparator = comparator;
     }
 
     top() {
-        return this.isEmpty() ? null : this.heapArray[0];
+        return this.isEmpty() ? null : this.heapArray[1];
     }
 
     insert(item) {
@@ -83,9 +83,14 @@ export default class Heap {
         if(this.isEmpty()) {
             return null;
         }
+
+        if(this.size() === 1) {
+            return this.heapArray.pop();
+        }
+
         const oldTop = this.top();
-        this.heapArray[0] = this.heapArray.pop();
-        _sinkDown(0, this.heapArray, this.comparator);
+        this.heapArray[1] = this.heapArray.pop();
+        _sinkDown(1, this.heapArray, this.comparator);
         return oldTop;
 
     }
@@ -95,13 +100,13 @@ export default class Heap {
             return null;
         }
         const oldTop = this.top();
-        this.heapArray[0] = item;
-        _sinkDown(0, this.heapArray, this.comparator);
+        this.heapArray[1] = item;
+        _sinkDown(1, this.heapArray, this.comparator);
         return oldTop;
     }
 
     size() {
-        return this.heapArray.length;
+        return this.heapArray.length - 1;
     }
 
     isEmpty() {
