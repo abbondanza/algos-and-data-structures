@@ -8,10 +8,6 @@ const minComparator = (a, b) => {
     return b - a;
 }
 
-const minObjComparator = (a, b) => {
-    return b.value - a.value;
-}
-
 test('isEmpty() - empty heap', () => {
     const heap = new MaxHeap(maxComparator);
     expect(heap.isEmpty()).toBe(true);
@@ -37,6 +33,12 @@ test('insert()', () => {
     heap.insert(-42);
 
     expect(heap.size()).toBe(5);
+})
+
+test('contains()', () => {
+    const heap = new MaxHeap(maxComparator);
+    heap.insert(5);
+    expect(heap.contains(5)).toBe(true);
 })
 
 test('extractTop() - duplicates', () => {
@@ -278,6 +280,59 @@ test('replaceRoot() - min comparator', () => {
     expect(heap.top()).toBe(5);
 });
 
+test('remove()', () => {
+    const heap = new MaxHeap(minComparator);
+    heap.insert(5);
+    /*
+            5
+    */
+    heap.insert(9);
+    /*
+            5
+           /
+          9
+    */
+    heap.insert(-1);
+    /*
+            -1
+           /  \
+          9   5
+    */
+    heap.insert(20);
+    /*
+            -1
+           /  \
+          9    5
+         /
+        20
+    */
+    heap.insert(0);
+    /*
+            -1
+           /  \
+          0    5
+         / \
+        20  9
+    */
+
+    heap.remove(0);
+
+    /*
+            -1
+           /  \
+          9   5
+         /
+        20
+    */
+
+    expect(heap.contains(0)).toBe(false);
+    expect(heap.extractTop()).toBe(-1);
+    expect(heap.extractTop()).toBe(5);
+    expect(heap.extractTop()).toBe(9);
+    expect(heap.extractTop()).toBe(20);
+});
+
+
 test('replaceRoot() - min comparator - single item', () => {
     const heap = new MaxHeap(minComparator);
     heap.insert(5);
@@ -285,5 +340,4 @@ test('replaceRoot() - min comparator - single item', () => {
     expect(heap.top()).toBe(7);
     expect(heap.size()).toBe(1);
 })
-
 

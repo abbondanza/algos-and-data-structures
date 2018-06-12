@@ -64,6 +64,16 @@ const _rightIndex = (idx, arr) => {
     return (2*idx) + 1;
 }
 
+const _itemIndexes = (item, heapArray, comparator) => {
+    let idxs = [];
+    for(let i=1; i<heapArray.length; i++) {
+        if(!comparator(item, heapArray[i])) {
+            idxs.push(i);
+        }
+    }
+
+    return idxs;
+}
 export default class MaxHeap {
     constructor(comparator) {
         this.heapArray = [null];
@@ -94,6 +104,24 @@ export default class MaxHeap {
         _sinkDown(1, this.heapArray, this.comparator);
         return oldTop;
 
+    }
+
+    contains(item) {
+        return _itemIndexes(item, this.heapArray, this.comparator).length > 0;
+    }
+
+    remove(item) {
+        if(this.isEmpty()) {
+            return;
+        }
+
+        const itemIdxs = _itemIndexes(item, this.heapArray, this.comparator);
+        if(!itemIdxs.length) {
+            return;
+        }
+        const toRemove = itemIdxs[0];
+        this.heapArray[toRemove] = this.heapArray.pop();
+        _sinkDown(toRemove, this.heapArray, this.comparator);
     }
 
     replaceRoot(item) {
