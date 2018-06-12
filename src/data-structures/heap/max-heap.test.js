@@ -8,6 +8,10 @@ const minComparator = (a, b) => {
     return b - a;
 }
 
+const minObjComparator = (a, b) => {
+    return b.value - a.value;
+}
+
 test('isEmpty() - empty heap', () => {
     const heap = new MaxHeap(maxComparator);
     expect(heap.isEmpty()).toBe(true);

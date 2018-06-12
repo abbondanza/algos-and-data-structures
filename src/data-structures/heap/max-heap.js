@@ -34,14 +34,14 @@ const _sinkDown = (index, arr, comparator) => {
         }
     // node has both children
     } else {
-        let largest = left;
-        if(comparator(arr[left], arr[right]) <= 0) {
-            largest = right;
+        let nextIndex = left;
+        if(comparator(arr[left], arr[right]) < 0) {
+            nextIndex = right;
         }
 
-        if(comparator(node, arr[largest]) <= 0) {
-            _swap(largest, index, arr);
-            _sinkDown(largest, arr, comparator);
+        if(comparator(node, arr[nextIndex]) <= 0) {
+            _swap(nextIndex, index, arr);
+            _sinkDown(nextIndex, arr, comparator);
         }
     }
 }
@@ -83,6 +83,7 @@ export default class MaxHeap {
         if(this.isEmpty()) {
             return null;
         }
+
 
         if(this.size() === 1) {
             return this.heapArray.pop();
