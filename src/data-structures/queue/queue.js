@@ -15,6 +15,9 @@ export default class Stack {
     size() {
         return this.list.size();
     }
+    peek() {
+        return this.list.getFirst();
+    }
     asArray() {
         return this.list.asArray();
     }
