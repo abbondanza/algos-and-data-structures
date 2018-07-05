@@ -13,6 +13,16 @@ test('dijkstrasShortestPath()', () => {
 	graph.addEdge('C', 'E', 1);
 	graph.addEdge('D', 'E', 1);
 
+	/*
+		Graph:
+
+		A --3-- C --3-- E
+		|     / |     /
+		1   1   2   1
+		| /     | /
+		B --5-- D
+	*/
+
 	expect(dijkstrasShortestPath('A', 'E')).toBe(6);
 	expect(dijkstrasShortestPath('A', 'C')).toBe(2);
 	expect(dijkstrasShortestPath('A', 'D')).toBe(4);
