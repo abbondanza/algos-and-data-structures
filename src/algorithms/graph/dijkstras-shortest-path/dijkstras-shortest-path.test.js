@@ -23,8 +23,19 @@ test('dijkstrasShortestPath()', () => {
 		B --5-- D
 	*/
 
-	expect(dijkstrasShortestPath('A', 'E')).toBe(6);
-	expect(dijkstrasShortestPath('A', 'C')).toBe(2);
-	expect(dijkstrasShortestPath('A', 'D')).toBe(4);
+	expect(dijkstrasShortestPath(
+		graph.getVertex('A'),
+		graph.getVertex('E')
+	)).toBe(6);
+
+	expect(dijkstrasShortestPath(
+		graph.getVertex('A'),
+		graph.getVertex('C')
+	)).toBe(2);
+
+	expect(dijkstrasShortestPath(
+		graph.getVertex('A'),
+		graph.getVertex('D')
+	)).toBe(4);
 
 })
