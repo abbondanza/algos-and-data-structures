@@ -29,7 +29,6 @@ test('same priority items should be polled in FIFO order', () => {
     pq.insert({ value: 1 }, 0);
     pq.insert({ value: 3 }, 7);
 
-
     expect(pq.size()).toBe(7);
     expect(pq.poll()).toEqual({ value: 1});
     expect(pq.poll()).toEqual({ value: 3});
