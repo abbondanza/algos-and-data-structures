@@ -21,7 +21,7 @@ test('insert() should ensure that elements are added in order', () => {
     expect(pq.poll()).toEqual(1);
 })
 
-test.only('same priority should be polled based on their value comparison', () => {
+test('same priority should be polled based on their value comparison', () => {
     const pq = new PriorityQueue(valComparator);
     pq.insert(9, 8);
     pq.insert(8, 7);
