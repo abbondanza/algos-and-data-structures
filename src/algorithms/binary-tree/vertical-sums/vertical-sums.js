@@ -1,25 +1,14 @@
 const verticalSums = (root) => {
-
-	let leftCount = 0;
-	let node = root;
-	while(node.left) {
-		node = node.left;
-		leftCount++;
-	}
-
-	let rightCount = 0;
-	node = root;
-	while(node.right) {
-		node = node.right;
-		rightCount++;
-	}
-
-	let sums = new Array(leftCount + rightCount + 1).fill(0);
-	let q = [{ node: root, vertical: leftCount}];
+	let sums = {};
+	let q = [{ node: root, vertical: 0}];
+	let minVert = 0;
+	let vertCount = 0;
 
 	while(q.length) {
 		let curr = q.shift();
+		minVert = Math.min(curr.vertical, minVert);
 		if(sums[curr.vertical] === void 0) {
+			vertCount++;
 			sums[curr.vertical] = 0;
 		}
 		sums[curr.vertical] += curr.node.value;
@@ -32,8 +21,12 @@ const verticalSums = (root) => {
 		}
 	}
 
-	return sums;
+	let sumArr = new Array(vertCount).fill(0);
+	for(let i=0; i < vertCount; i++) {
+		sumArr[i] = sums[i + minVert];
+	}
 
+	return sumArr;
 };
 
 export default verticalSums;
