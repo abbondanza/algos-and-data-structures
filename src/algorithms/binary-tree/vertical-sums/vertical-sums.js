@@ -1,11 +1,14 @@
+import Queue from '../../../data-structures/queue/queue';
+
 const verticalSums = (root) => {
 	let sums = {};
-	let q = [{ node: root, vertical: 0}];
+	let q = new Queue();
+	q.enqueue({ node: root, vertical: 0});
 	let minVert = 0;
 	let vertCount = 0;
 
-	while(q.length) {
-		let curr = q.shift();
+	while(q.size()) {
+		let curr = q.dequeue();
 		minVert = Math.min(curr.vertical, minVert);
 		if(sums[curr.vertical] === void 0) {
 			vertCount++;
@@ -13,11 +16,11 @@ const verticalSums = (root) => {
 		}
 		sums[curr.vertical] += curr.node.value;
 		if(curr.node.left) {
-			q.push({ node: curr.node.left, vertical: curr.vertical - 1})
+			q.enqueue({ node: curr.node.left, vertical: curr.vertical - 1})
 		}
 
 		if(curr.node.right) {
-			q.push({ node: curr.node.right, vertical: curr.vertical + 1})
+			q.enqueue({ node: curr.node.right, vertical: curr.vertical + 1})
 		}
 	}
 
