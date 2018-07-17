@@ -1,17 +1,17 @@
-const maxSubarraySum = (a) => {
-    let globalMax = -Infinity;
-    let upToHereMax = 0;
-    for(let i=0; i<a.length; i++) {
-        if(upToHereMax + a[i] > a[i]) {
-            upToHereMax += a[i];
+const maxSubarraySum = (arr) => {
+    let maxSum = -Infinity;
+    let curr = -Infinity;
+    arr.map((item) => {
+        if(curr + item > item) {
+            curr += item;
         } else {
-            upToHereMax = a[i];
+            curr = item;
         }
 
-        globalMax = Math.max(upToHereMax, globalMax);
-    }
+        maxSum = Math.max(curr, maxSum);
+    });
 
-    return globalMax;
+    return maxSum;
 }
 
 export default maxSubarraySum;

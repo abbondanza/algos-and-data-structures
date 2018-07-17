@@ -5,7 +5,6 @@ test('isEmpty()', () => {
     expect(pq.isEmpty()).toBe(true);
 })
 
-
 test('insert() should ensure that elements are added in order', () => {
     const pq = new FifoPriorityQueue();
     pq.insert({ value: 9 }, 8);
