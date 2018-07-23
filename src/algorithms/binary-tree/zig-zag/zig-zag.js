@@ -14,21 +14,27 @@
     M A X Z O B N Y
 */
 const zigZag = (root, callback) => {
-    let stk1 = [root];
-    let stk2 = [];
-    while(stk1.length || stk2.length) {
-        while(stk1.length) {
-            let top = stk1.pop();
+    let oddStack = [root]; // this stack will hold all elements at each odd level
+    let evenStack = []; // this stack will hold all elements at each even level
+    while(oddStack.length || evenStack.length) {
+        while(oddStack.length) {
+            let top = oddStack.pop();
             callback(top);
-            if(top.right) stk2.push(top.right);
-            if(top.left) stk2.push(top.left);
+            // at an even level, we want our elements
+            // to be printed from left to right
+            // so we push them onto the stack backwards
+            if(top.right) evenStack.push(top.right);
+            if(top.left) evenStack.push(top.left);
         }
 
-        while(stk2.length) {
-            let top = stk2.pop();
+        while(evenStack.length) {
+            let top = evenStack.pop();
             callback(top);
-            if(top.left) stk1.push(top.left);
-            if(top.right) stk1.push(top.right);
+            // at an even level, we want our elements
+            // to be printed from right to left
+            // so we push them onto the stack backwards
+            if(top.left) oddStack.push(top.left);
+            if(top.right) oddStack.push(top.right);
         }
     }
 }

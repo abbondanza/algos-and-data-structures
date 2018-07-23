@@ -1,5 +1,6 @@
 import BinarySearchTree from '../../../data-structures/binary-search-tree/binary-search-tree';
 import zigZag from './zig-zag';
+import zigZagQueues from './zig-zag-queues';
 
 test('zigZag()', () => {
     const tree = new BinarySearchTree();
@@ -70,5 +71,11 @@ test('zigZag()', () => {
     zigZag(tree.getRoot(), (node) => {
         traversal.push(node.value);
     });
+
+    const traversal2 = [];
+    zigZag(tree.getRoot(), (node) => {
+        traversal2.push(node.value);
+    });
     expect(traversal).toEqual(['M', 'A', 'X', 'Z', 'O', 'B', 'N', 'Y']);
+    expect(traversal2).toEqual(traversal);
 })
