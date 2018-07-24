@@ -15,3 +15,7 @@ test('lcs() - same string', () => {
 test('lcs() - general case', () => {
     expect(lcs('ABCDGHE', 'CDGQZ')).toBe('CDG');
 })
+
+test('lcs() - with duplicates', () => {
+    expect(lcs('ABCADGHEA', 'CADGQZA')).toBe('CADGA');
+})
