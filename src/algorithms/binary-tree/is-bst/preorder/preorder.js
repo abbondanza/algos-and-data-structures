@@ -1,5 +1,5 @@
 /*
-	Given an array we a preorder traversal of a binary tree,
+	Given an array representing a preorder traversal of a binary tree,
 	figure out if the traversal represents a Binary Search Tree.
 */
 const __isBST = (traversal) => {

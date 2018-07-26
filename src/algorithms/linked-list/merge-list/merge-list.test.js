@@ -34,3 +34,20 @@ test('mergeLists() - same size lists', () => {
 
 	expect(toArray(joint)).toEqual([1, 2, 3, 4, 5, 6, 7, 8])
 })
+
+test('mergeLists() - different size lists', () => {
+
+	let l1 = createLinkedListFromArray([1, 3, 5, 7]);
+	let l2 = createLinkedListFromArray([2, 4, 6, 8, 10]);
+	let joint = mergeLists(l1, l2);
+
+	expect(toArray(joint)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 10])
+})
+
+test('mergeLists() - only one list', () => {
+
+	let l1 = createLinkedListFromArray([1, 3, 5, 7]);
+	let joint = mergeLists(l1, null);
+
+	expect(toArray(joint)).toEqual([1, 3, 5, 7])
+})
