@@ -1,29 +1,29 @@
 import autocomplete from './autocomplete';
 
 test('autocomplete() - prefix is smaller than all words in dict', () => {
-	let prefix = 'hel';
-	let dict = ['hello', 'goodbye', 'help', 'hell', 'tchau'];
-
-	expect(autocomplete(dict, prefix)).toEqual(['hello', 'help', 'hell']);
+	expect(autocomplete(
+		['hello', 'goodbye', 'help', 'hell', 'tchau'].sort(),
+		'hel')
+	).toEqual(['hello', 'help', 'hell'].sort());
 })
 
 test('autocomplete() - some words are smaller than prefix', () => {
-	let prefix = 'abc';
-	let dict = ['a', 'ab', 'abc', 'abcd', 'nothing'];
-
-	expect(autocomplete(dict, prefix)).toEqual(['abc', 'abcd']);
+	expect(autocomplete(
+		['a', 'ab', 'abc', 'abcd', 'nothing'].sort(),
+		'abc')
+	).toEqual(['abc', 'abcd'].sort());
 })
 
 test('autocomplete() - word is prefix to nothing', () => {
-	let prefix = 'abc';
-	let dict = ['nope', 'notme', 'nowayjose', 'bye', 'nothing'];
-
-	expect(autocomplete(dict, prefix)).toEqual([]);
+	expect(autocomplete(
+		['nope', 'notme', 'nowayjose', 'bye', 'nothing'].sort(),
+		'abc'
+	)).toEqual([]);
 })
 
 test('autocomplete() - empty string is prefix to everything', () => {
-	let prefix = '';
-	let dict = ['we', 'are', 'all', 'in'];
-
-	expect(autocomplete(dict, prefix)).toEqual(['we', 'are', 'all', 'in']);
+	expect(autocomplete(
+		['we', 'are', 'all', 'in'].sort(),
+		''
+	)).toEqual(['we', 'are', 'all', 'in'].sort());
 })
