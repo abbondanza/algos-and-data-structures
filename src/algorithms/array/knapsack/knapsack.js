@@ -1,3 +1,11 @@
+/*
+    Problem Description:
+
+    Given a list of items ({ weight, value }) and a knapsack
+    weightLimit, calculate maximum sum of values in knapsack
+    whose total weights are less than weightLimit.
+*/
+
 const knapsackRecursive = (items, weightLimit, n) => {
     if(n < 0 || weightLimit === 0) {
         return 0;
@@ -5,8 +13,8 @@ const knapsackRecursive = (items, weightLimit, n) => {
 
     let currItem = items[n];
 
-    // if currentItem does not fit, then skip it
-    if(currentItem.weight > weightLimit) {
+    // if currItem does not fit, then skip it
+    if(currItem.weight > weightLimit) {
         return knapsackRecursive(items, weightLimit, n-1);
     }
 
@@ -21,28 +29,36 @@ const knapsackRecursive = (items, weightLimit, n) => {
 
 const knapsackDynamic = (items, weightLimit) => {
     let k = new Array(items.length + 1).fill(null);
+
+    // K: Matrix that will hold bottom-up memoization
+    // of subsequent knapsackDynamic calls
     let K = k.map(() => {
         return new Array(weightLimit + 1).fill(0)
     });
 
-    // row, col --> i, w
-    for(let i=1; i<=items.length; i++) {
-        for(let w=1; w<=weightLimit; w++) {
-            // [i-1] because we are using a 1-index
-            let currItem = items[i-1];
-            // if current item fits into knapsack
-            if(currItem.weight <= w) {
-                // current cell
-                K[i][w] = Math.max(
-                    // IF item goes into knapsack
-                    currItem.value + K[i-1][w-currItem.weight],
-                    // IF item stays out
-                    K[i-1][w]
+    // Iterate through rows and columns to fill K matrix.
+    // K[r][c] holds max knapsack value for subproblem
+    // where weightLimit = c and items.length = r.
+    for(let row=1; row<=items.length; row++) {
+        for(let col=1;col<=weightLimit; col++) {
+            let currItem = items[row-1];
+            let cellVal = 0;
+            // Current item does not fit into knapsack,
+            // so copy value from cell to the the top.
+            if(currItem.weight > col) {
+                cellVal = K[row-1][col];
+            } else {
+                // Maximize current cell value by finding max
+                // between cases:
+                //      1) item goes into knapsack
+                //      2) item stays out of knapsack
+                cellVal = Math.max(
+                    currItem.value + K[row-1][col-currItem.weight],
+                    K[row-1][col]
                 );
-                continue;
             }
-            // else, if item stays out
-            K[i][w] = K[i-1][w];
+
+            K[row][col] = cellVal;
         }
     }
 
@@ -50,8 +66,6 @@ const knapsackDynamic = (items, weightLimit) => {
 };
 
 
-const knapsack = (items, weightLimit) => {
-    return knapsackDynamic(items, weightLimit);
-};
+const knapsack = knapsackDynamic;
 
 export default knapsack;
