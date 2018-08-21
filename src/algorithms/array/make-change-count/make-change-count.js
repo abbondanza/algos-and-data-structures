@@ -1,4 +1,10 @@
-const makingChange = (denominations, amount) => {
+/*
+	Problem description:
+
+	Given a set of coin values (denominations) and a target amount,
+	return the number of ways we can make change.
+*/
+const makeChangeCount = (denominations, amount) => {
 	// Create array to hold memizations of all values
 	// from 0 - amount. ways[n] holds how many ways
 	// we can make change for n amount.
@@ -23,4 +29,4 @@ const makingChange = (denominations, amount) => {
 	return  ways[amount];
 }
 
-export default makingChange;
+export default makeChangeCount;
